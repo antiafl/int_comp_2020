@@ -1,11 +1,14 @@
 clear all
 %1er paso, cargar los datos
-path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\p1',path);
-load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\p0\irisVars');
+% path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\p1',path);
+path ('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020',path);
+
+% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\p0\irisVars');
+load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
 
 %Training con K-fold
 k = 10; 
-type = 'linear';
+type = 'quadratic';
 fprintf('1) Entrenando modelos con K-fold = 10 y usando %s discriminant\n',type);
 CV = cvpartition(OUTPUTS,'Kfold',k);
 [Mdl] = train_linearDisc_Kfold_p1(k,INPUTS,OUTPUTS,type,CV);
@@ -44,21 +47,23 @@ fprintf('\nFIN INFORME\n')
 if exist('matrix4Stats.mat', 'file') == 2
      load('matrix4Stats')
 end
+
+% matrixForStats=zeros(4,10);
+
 % Cálculo de la matriz para test estadístico
 switch type
     case 'linear'
         for i = 1:k
             matrixForStats(1,i) =  mean(ACC(:,i));
-
         end
     case 'quadratic'
         for i = 1:k
             matrixForStats(2,i) =  mean(ACC(:,i));
-
         end
 end
+
 save('matrix4Stats','matrixForStats');
 
 % Test Estadístico
-etiqueta=['Linear  ','Cuadratico  '];
-%[P] = testEstadistico(matrixForStats, etiqueta)
+etiqueta=['Linear  ','Cuadratico  ','Prueba1  ','Prueba2  '];
+% [P] = testEstadistico(matrixForStats, etiqueta)
