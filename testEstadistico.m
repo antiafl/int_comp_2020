@@ -4,41 +4,42 @@ function [P] = testEstadistico(Muestras, etiqueta, criticalValue)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Realiza la comprobacion de si la diferencia entre los minimos de varios
 % algoritmos son significativas
-% ENTRADAS: Muestras: matriz SxM que contiene los S valores para la medida de rendimiento (precisión, ECM, etc.) elegida para 
-%           caracterizar los M modelos a comparar. 
-%           etiqueta: vector que contiene las etiquetas que se utilizaran
-%           para identificar a los modelos de acuerdo al orden en que se encuentran en el cell array
-%           Muestras. Por ejemplo, etiqueta=['SCG  ';'GDX  ';'miGDX'];
-%           criticalValue: valor critico a aplicar que debe superar el estadistico P
-%           para determinar si las muestras son o no estadisticamente
+% ENTRADAS: 
+%  Muestras: matriz SxM, donde en las filas est?n los S valores de la medida de rendimiento (ACC, ECM, etc.) elegida para 
+%            comparar los M modelos. Debe haber, al menos, 4 medidas por
+%            Modelo.
+%  etiqueta: vector que contiene las etiquetas que se utilizaran para
+%            identificar a los modelos de acuerdo al orden en que se encuentran en el
+%            array de Muestras. Todas las etiquetas deben tener la misma longitud. Por ejemplo, etiqueta=['Disc lineal';'Disc cuadrat';'Arbol Dec   '];
+%  criticalValue: valor critico que debe superar el estadistico P para determinar si las muestras de cada Modelo son o no estadisticamente
 %           similares. Opcional, valor por defecto 0.05
-% SALIDAS:  P: resultado del test,  un p-valor pequeño nos llevaría a rechazar 
-%           la hipótesis nula y nos haría afirmar que los modelos son distintas
+%
+% SALIDAS:  
+%   P:       resultado del test,  un p-valor pequeno nos lleva a rechazar la hipotesis nula 
+%            y nos permite afirmar que los modelos son distintos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 [S,M]=size(Muestras);
-%Vector de minimos debe contener en cada columna los minimos de un
-%algoritmo
 
 if ~exist('criticalValue')
     criticalValue=0.05
 end
 
-% test para verificar la normalidad de la muestra. Mas fiable que kstest el criticalValue esta limitado a [0.01,0.20] 
-% Debe haber al menos 4 medidas por Modelo
+% test de Lillie para verificar la normalidad de la muestra. El criticalValue esta limitado a [0.01,0.20] 
+% 
 
 H_kt=[];
 for c=1:M    
     H_kt=[H_kt,lillietest(mapstd(Muestras(:,c)),criticalValue)];
 end
 
-% Si H_kt(i)=1 entonces la hipotesis nula "distribución normal" se puede
-% rechazar con un nivel 5%
+% Si H_kt(i)=1 entonces la hipotesis nula "distribucion normal" se puede
+% rechazar con un nivel criticalValue%
     
 if sum(H_kt)==0 %si cumple la condicion de normalidad
     %Por defecto los siguientes test devuelven dos figuras: la tabla ANOVA y los box plots de los datos de cada modelo comparado.
-    %Si no se quiere mostrar las figuras, hay que añadir el parámetro 'off'
+    %Si no se quiere mostrar las figuras, hay que anhadir el parametro 'off'
     [P,ANOVATAB,STATS]  = anova1(Muestras,etiqueta); %[P,ANOVATAB,STATS]  = anova1(Muestras,etiMqueta,'off');
 else
     [P,ANOVATAB,STATS]  = kruskalwallis(Muestras,etiqueta); %[P,ANOVATAB,STATS]  = kruskalwallis(Muestras,etiqueta,'off');
