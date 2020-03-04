@@ -27,6 +27,9 @@ end
 type = {'linear', 'quadratic', 'tree'};
 
 %Training con K-fold
+%TODO
+%SI iris entonces Leave-1-out
+%SINO kfold para cancer
 k = 10; 
 CV = cvpartition(OUTPUTS,'Kfold',k);
 fprintf('1) Entrenando modelos con K-fold = 10\n');
@@ -46,6 +49,9 @@ Models = [Mdl_linear; Mdl_quadratic; Mdl_tree];
 fprintf('2) Obteniendo métricas de rendimiento para los modelos entrenados\n');
 %El código se encuentra dentro del bucle por no repetir código innecesario
 
+%TODO
+%Sacar métricas también para el entrenamiento y comparar, meter metricas
+%entrenamiento en array para despues comparar
 %Muestra de las métricas obtenidas a través del informe
 fprintf('3) Informe\n') 
 if (strcmp(loaded,'iris') == 1) 

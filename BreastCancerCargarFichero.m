@@ -84,13 +84,13 @@ INPUTS = breastcancerwisconsin(:,2:10);
 %valores NaN
 
 % Calculate mean of each column
-mean_array = nanmean(breastcancerwisconsin,1);    
+mean_array = nanmean(INPUTS,1);    
 
 %Reemplazamos los valores NaN por la media de la columna
-[fila,columna] = find(isnan(breastcancerwisconsin));
+[fila,columna] = find(isnan(INPUTS));
 for i=1:size(fila)    
     for j=1:size(columna)
-        breastcancerwisconsin(fila(i),columna(j)) = mean_array(columna(j));
+        INPUTS(fila(i),columna(j)) = mean_array(columna(j));
     end
 end
 
