@@ -99,9 +99,9 @@ end
 for i=1:size(OUTPUTS_num)
     switch OUTPUTS_num(i)
         case 2 
-            OUTPUTS{i} = 'BENIGNO';
+            OUTPUTS{i,1} = 'BENIGNO';
         case 4            
-            OUTPUTS{i} = 'MALIGNO';
+            OUTPUTS{i,1} = 'MALIGNO';
     end
 end
 [NumData, Attributes] = size(INPUTS);

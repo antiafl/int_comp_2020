@@ -34,6 +34,8 @@ k = 10;
 CV = cvpartition(OUTPUTS,'Kfold',k);
 fprintf('1) Entrenando modelos con K-fold = 10\n');
 
+CV2 = cvpartition(OUTPUTS,'LeaveOut');
+
 fprintf('\t1.- Discriminante Lineal\n')
 [Mdl_linear] = train_Kfold_p1(k,INPUTS,OUTPUTS,type{1},CV);
 

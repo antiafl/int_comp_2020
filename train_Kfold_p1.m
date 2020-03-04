@@ -1,5 +1,6 @@
 function [model] = train_Kfold_p1(k,INPUTS,OUTPUTS,discrType,CV)
 
+%TODO - sacar entrenamiento con arboles para otro fichero
 for i = 1:k
     trIdx = CV.training(i);   
     INPUTTRAIN=INPUTS(trIdx,:);
