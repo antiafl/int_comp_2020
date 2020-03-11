@@ -17,8 +17,8 @@ loaded = 'iris'; classNumber = 3;
 % loaded = 'cancer';classNumber = 2;
 
 %% PRÁCTICA
-%TODO - meterle a los modelos predictornames responsename, partition -> 1
 %fichero distinto para cada dataset
+
 if (strcmp(loaded,'iris') == 1)
     fprintf('**************************Iris DATASET**************************\n');
 %% Entrenamiento   
@@ -32,10 +32,9 @@ if (strcmp(loaded,'iris') == 1)
     [Mdl_quadratic] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'quadratic',CV);
 
     fprintf('\t3.- Árboles de Decisión\n')
-    [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'',0);
-%    modifyTreeModelsForIris(Mdl_tree);
-%     [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
-%     [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
+    [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
     
 elseif (strcmp(loaded,'cancer') == 1)
     fprintf('**********Breast Cancer Wisconsin Original DATASET**************\n');
@@ -52,14 +51,12 @@ elseif (strcmp(loaded,'cancer') == 1)
 
 %TODO entrenar 3 árboles diferentes con parámetros diferentes para el test 
 %comprobar que son árboles distintos
-    fprintf('\t3.- Árboles de Decisión\n')
-    Name = ''; % 'MaxNumSplits'     'MinLeafSize'  'MinParentSize' 'MergeLeaves'
-    Value = 0; % (num_ejemplos-1)   (1)            (10)            (on)
-    [Mdl_tree] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
-%     [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
-%     [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
+    fprintf('\t3.- Árboles de Decisión\n');
+    [Mdl_tree] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
 end
-Models = [Mdl_linear; Mdl_quadratic; Mdl_tree];
+Models = [Mdl_linear; Mdl_quadratic; Mdl_tree; Mdl_tree2; Mdl_tree3];
 
 %% Métricas de Rendimiento e Informe
 %Obtención métricas de rendimiento
@@ -113,5 +110,5 @@ save('matrix4Stats','matrixForStats');
 
 % Test Estadístico
 %TODO - añadir etiquetas para arboles restantes
-etiqueta=['Linear          ';'Cuadratico      ';'Arboles Decision'];
+etiqueta=['Linear           ';'Cuadratico       ';'Arboles Decision1';'Arboles Decision2';'Arboles Decision3'];
 [P] = testEstadistico(matrixForStats, etiqueta);
