@@ -8,13 +8,13 @@ rng('shuffle');
 
 %% IRIS
 %load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
-% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
-% loaded = 'iris'; classNumber = 3;
+load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
+loaded = 'iris'; classNumber = 3;
 
 %% CANCER WISONSIN
 % load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
-load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
-loaded = 'cancer';classNumber = 2;
+% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
+% loaded = 'cancer';classNumber = 2;
 
 %% PRÁCTICA
 %TODO - meterle a los modelos predictornames responsename, partition -> 1
@@ -33,6 +33,9 @@ if (strcmp(loaded,'iris') == 1)
 
     fprintf('\t3.- Árboles de Decisión\n')
     [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'',0);
+%    modifyTreeModelsForIris(Mdl_tree);
+%     [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
+%     [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
     
 elseif (strcmp(loaded,'cancer') == 1)
     fprintf('**********Breast Cancer Wisconsin Original DATASET**************\n');
@@ -109,5 +112,6 @@ matrixForStats =  mean_ACC';
 save('matrix4Stats','matrixForStats');
 
 % Test Estadístico
+%TODO - añadir etiquetas para arboles restantes
 etiqueta=['Linear          ';'Cuadratico      ';'Arboles Decision'];
 [P] = testEstadistico(matrixForStats, etiqueta);
