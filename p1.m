@@ -12,11 +12,13 @@ rng('shuffle');
 % loaded = 'iris'; classNumber = 3;
 
 %% CANCER WISONSIN
-%load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
+% load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
 load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
 loaded = 'cancer';classNumber = 2;
 
 %% PRÁCTICA
+%TODO - meterle a los modelos predictornames responsename, partition -> 1
+%fichero distinto para cada dataset
 if (strcmp(loaded,'iris') == 1)
     fprintf('**************************Iris DATASET**************************\n');
 %% Entrenamiento   
@@ -51,6 +53,8 @@ elseif (strcmp(loaded,'cancer') == 1)
     Name = ''; % 'MaxNumSplits'     'MinLeafSize'  'MinParentSize' 'MergeLeaves'
     Value = 0; % (num_ejemplos-1)   (1)            (10)            (on)
     [Mdl_tree] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
+%     [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
+%     [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,Name,Value);
 end
 Models = [Mdl_linear; Mdl_quadratic; Mdl_tree];
 

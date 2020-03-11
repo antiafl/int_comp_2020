@@ -1,8 +1,8 @@
 function [mean_ACC] = indices_informe_iris(N,classNumber,INPUTS,OUTPUTS,CV,Mdl,i)
 
 %TODO - pensar si vale la pena guardar C matriz de confusión para después
-k=1;
-h=1;
+k=1; %controlar que agrupamos los datos de 15 en 15
+h=1; %contador para insertar correctamente en la matriz que se le pasa a performance_indexes
 for x = 1:N    
     teIdx = CV.test(x);    
     INPUTTEST=INPUTS(teIdx,:);
@@ -20,7 +20,6 @@ for x = 1:N
         k=1;
     else
         k=k+1;
-        continue
     end    
 end
 for j = 1:classNumber
