@@ -1,20 +1,20 @@
 clear all
 %1er paso, cargar los datos
-path ('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020',path);
-% path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020',path);
+% path ('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020',path);
+path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020',path);
 
 %Randomiza la semilla
 rng('shuffle');
 
 %% IRIS
-load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
+% load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
 % load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
-loaded = 'iris'; classNumber = 3;
+% loaded = 'iris'; classNumber = 3;
 
 %% CANCER WISONSIN
 % load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
-% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
-% loaded = 'cancer';classNumber = 2;
+load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
+loaded = 'cancer';classNumber = 2;
 
 %% PRÁCTICA
 %fichero distinto para cada dataset
@@ -32,9 +32,9 @@ if (strcmp(loaded,'iris') == 1)
     [Mdl_quadratic] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'quadratic',CV);
 
     fprintf('\t3.- Árboles de Decisión\n')
-    [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
     
 elseif (strcmp(loaded,'cancer') == 1)
     fprintf('**********Breast Cancer Wisconsin Original DATASET**************\n');
@@ -52,9 +52,9 @@ elseif (strcmp(loaded,'cancer') == 1)
 %TODO entrenar 3 árboles diferentes con parámetros diferentes para el test 
 %comprobar que son árboles distintos
     fprintf('\t3.- Árboles de Decisión\n');
-    [Mdl_tree] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
 end
 Models = [Mdl_linear; Mdl_quadratic; Mdl_tree; Mdl_tree2; Mdl_tree3];
 
