@@ -1,7 +1,7 @@
 clear all
 %1er paso, cargar los datos
-% path ('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020',path);
-path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020',path);
+path ('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020',path);
+% path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020',path);
 
 %Randomiza la semilla
 rng('shuffle');
@@ -12,8 +12,8 @@ rng('shuffle');
 % loaded = 'iris'; classNumber = 3;
 
 %% CANCER WISONSIN
-% load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
-load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
+load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
+% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
 loaded = 'cancer';classNumber = 2;
 
 %% PRÁCTICA
@@ -53,8 +53,8 @@ elseif (strcmp(loaded,'cancer') == 1)
 %comprobar que son árboles distintos
     fprintf('\t3.- Árboles de Decisión\n');
     [Mdl_tree] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','off');
+    [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 15, 'MergeLeaves','on');
 end
 Models = [Mdl_linear; Mdl_quadratic; Mdl_tree; Mdl_tree2; Mdl_tree3];
 
