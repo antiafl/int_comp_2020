@@ -32,8 +32,8 @@ if (strcmp(loaded,'iris') == 1)
     [Mdl_quadratic] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'quadratic',CV);
 
     fprintf('\t3.- Árboles de Decisión\n')
-    [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-10, 'MinLeafSize', 1, 'MinParentSize', 15, 'MergeLeaves','on');
-    [Mdl_tree2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 20, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 2, 'MinParentSize', 10, 'MergeLeaves','on');
     [Mdl_tree3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
     
 elseif (strcmp(loaded,'cancer') == 1)
