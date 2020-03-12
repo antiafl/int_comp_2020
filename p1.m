@@ -1,14 +1,14 @@
 clear all
 %1er paso, cargar los datos
-%path ('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020',path);
-path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020',path);
+path ('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020',path);
+% path('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020',path);
 
 %Randomiza la semilla
 rng('shuffle');
 
 %% IRIS
-%load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
-load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
+load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
+% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
 loaded = 'iris'; classNumber = 3;
 
 %% CANCER WISONSIN
