@@ -26,15 +26,15 @@ if (strcmp(loaded,'iris') == 1)
     CV = cvpartition(OUTPUTS,'LeaveOut');
     fprintf('1) Entrenando modelos con Leave 1 Out para dataset Iris\n');
     fprintf('\t1.- Discriminante Lineal\n')
-    [Mdl_linear] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'linear',CV);
+    [Mdl_linear,INPUTTRAIN_L,DTRAIN_L] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'linear',CV);
     
     fprintf('\t2.- Discriminante Cuadrático\n')
-    [Mdl_quadratic] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'quadratic',CV);
+    [Mdl_quadratic,INPUTTRAIN_Q,DTRAIN_Q] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'quadratic',CV);
 
     fprintf('\t3.- Árboles de Decisión\n')
-    [Mdl_tree] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree,INPUTTRAIN_T1,DTRAIN_T1] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2,INPUTTRAIN_T2,DTRAIN_T2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree3,INPUTTRAIN_T3,DTRAIN_T3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
     
 elseif (strcmp(loaded,'cancer') == 1)
     fprintf('**********Breast Cancer Wisconsin Original DATASET**************\n');
@@ -44,28 +44,26 @@ elseif (strcmp(loaded,'cancer') == 1)
     CV = cvpartition(OUTPUTS,'Kfold',k);
     fprintf('1) Entrenando modelos con K-fold = 10 para dataset Breast Cancer Wisconsin\n');
     fprintf('\t1.- Discriminante Lineal\n')
-    [Mdl_linear] = train_Kfold_discr(k,INPUTS,OUTPUTS,'linear',CV);
+    [Mdl_linear,INPUTTRAIN_L,DTRAIN_L] = train_Kfold_discr(k,INPUTS,OUTPUTS,'linear',CV);
 
     fprintf('\t2.- Discriminante Cuadrático\n')
-    [Mdl_quadratic] = train_Kfold_discr(k,INPUTS,OUTPUTS,'quadratic',CV);
-
-%TODO entrenar 3 árboles diferentes con parámetros diferentes para el test 
+    [Mdl_quadratic,INPUTTRAIN_Q,DTRAIN_Q] = train_Kfold_discr(k,INPUTS,OUTPUTS,'quadratic',CV);
+ 
 %comprobar que son árboles distintos
     fprintf('\t3.- Árboles de Decisión\n');
-    [Mdl_tree] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree,INPUTTRAIN_T1,DTRAIN_T1] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2,INPUTTRAIN_T2,DTRAIN_T2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree3,INPUTTRAIN_T3,DTRAIN_T3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
 end
 Models = [Mdl_linear; Mdl_quadratic; Mdl_tree; Mdl_tree2; Mdl_tree3];
+MInputs = [INPUTTRAIN_L;INPUTTRAIN_Q;INPUTTRAIN_T1;INPUTTRAIN_T2;INPUTTRAIN_T3];
+MOutputs = [DTRAIN_L;DTRAIN_Q;DTRAIN_T1;DTRAIN_T2;DTRAIN_T3];
 
 %% Métricas de Rendimiento e Informe
 %Obtención métricas de rendimiento
 fprintf('2) Obteniendo métricas de rendimiento para los modelos entrenados\n');
 %El código se encuentra dentro del bucle por no repetir código innecesario
 
-%TODO
-%Sacar métricas también para el entrenamiento y comparar, meter metricas
-%entrenamiento en array para despues comparar
 %Muestra de las métricas obtenidas a través del informe
 fprintf('3) INFORME\n') 
 if (strcmp(loaded,'iris') == 1) 
@@ -76,12 +74,14 @@ if (strcmp(loaded,'iris') == 1)
             case 2
                 modelo = 'Discriminante Cuadrático';
             case 3
-                modelo = 'Árbol de Decisión';
-            otherwise
-                modelo = '';
+                modelo = 'Árbol de Decisión, splitCriterion = gdi';
+            case 4
+                modelo = 'Árbol de Decisión, splitCriterion = twoing';
+            case 5
+                modelo = 'Árbol de Decisión, splitCriterion = deviance';
         end          
         fprintf('3.%i.1) Informe con las métricas para los modelos entrenados con %s\n',i,modelo);
-        [mean_ACC(i,:)] = indices_informe_iris(CV.N,classNumber,INPUTS,OUTPUTS,CV,Models(i,:),i);
+        [mean_ACC(i,:)] = indices_informe_iris(CV.N,classNumber,INPUTS,MInputs(i,:),OUTPUTS,MOutputs(i,:),CV,Models(i,:),i);
     end
 elseif (strcmp(loaded,'cancer') == 1) 
     for i=1:size(Models)
@@ -91,12 +91,14 @@ elseif (strcmp(loaded,'cancer') == 1)
             case 2
                 modelo = 'Discriminante Cuadrático';
             case 3
-                modelo = 'Árbol de Decisión';
-            otherwise
-                modelo = '';
+                modelo = 'Árbol de Decisión, splitCriterion = gdi';
+            case 4
+                modelo = 'Árbol de Decisión, splitCriterion = twoing';
+            case 5
+                modelo = 'Árbol de Decisión, splitCriterion = deviance';
         end          
         fprintf('3.%i.1) Informe con las métricas para los modelos entrenados con %s\n',i,modelo);
-        [mean_ACC(i,:)] = indices_informe_cancer(k,1,INPUTS,OUTPUTS,CV,Models(i,:),i);  
+        [mean_ACC(i,:)] = indices_informe_cancer(k,1,INPUTS,MInputs(i,:),OUTPUTS,MOutputs(i,:),CV,Models(i,:),i);  
     end
 end
     
@@ -109,6 +111,6 @@ matrixForStats =  mean_ACC';
 save('matrix4Stats','matrixForStats');
 
 % Test Estadístico
-%TODO - añadir etiquetas para arboles restantes
 etiqueta=['Linear           ';'Cuadratico       ';'Arboles Decision1';'Arboles Decision2';'Arboles Decision3'];
 [P] = testEstadistico(matrixForStats, etiqueta);
+clear vars classNumber CV DTRAIN_L DTRAIN_Q DTRAIN_T1 DTRAIN_T2 DTRAIN_T3 etiqueta i INPUTTRAIN_L INPUTTRAIN_Q INPUTTRAIN_T1 INPUTTRAIN_T2 INPUTTRAIN_T3 k loaded Mdl_linear Mdl_quadratic Mdl_tree Mdl_tree2 Mdl_tree3 mean_ACC MInputs modelo MOutputs NumClass NumData;
