@@ -8,13 +8,13 @@ rng('shuffle');
 
 %% IRIS
 % load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
-% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
-% loaded = 'iris'; classNumber = 3;
+load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
+loaded = 'iris'; classNumber = 3;
 
 %% CANCER WISONSIN
 % load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
-load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
-loaded = 'cancer';classNumber = 2;
+% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
+% loaded = 'cancer';classNumber = 2;
 
 %% PRÁCTICA
 %fichero distinto para cada dataset
@@ -25,17 +25,18 @@ if (strcmp(loaded,'iris') == 1)
 %Training con Leave 1 Out
     CV = cvpartition(OUTPUTS,'LeaveOut');
     fprintf('1) Entrenando modelos con Leave 1 Out para dataset Iris\n');
-    fprintf('\t1.- Discriminante Lineal\n')
+    fprintf('\t1.- Discriminante Lineal\n\n\n')
     [Mdl_linear,INPUTTRAIN_L,DTRAIN_L] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'linear',CV);
     
-    fprintf('\t2.- Discriminante Cuadrático\n')
+    fprintf('\t2.- Discriminante Cuadrático\n\n\n')
     [Mdl_quadratic,INPUTTRAIN_Q,DTRAIN_Q] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'quadratic',CV);
 
     fprintf('\t3.- Árboles de Decisión\n')
-    [Mdl_tree,INPUTTRAIN_T1,DTRAIN_T1] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree2,INPUTTRAIN_T2,DTRAIN_T2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree3,INPUTTRAIN_T3,DTRAIN_T3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    
+
+    [Mdl_tree,INPUTTRAIN_T1,DTRAIN_T1] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-10, 'MinLeafSize', 1, 'MinParentSize', 15, 'MergeLeaves','on');
+    [Mdl_tree2,INPUTTRAIN_T2,DTRAIN_T2] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 20, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree3,INPUTTRAIN_T3,DTRAIN_T3] = train_leave1out_tree(CV.NumTestSets,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+  
 elseif (strcmp(loaded,'cancer') == 1)
     fprintf('**********Breast Cancer Wisconsin Original DATASET**************\n');
 %% Entrenamiento
@@ -51,10 +52,13 @@ elseif (strcmp(loaded,'cancer') == 1)
  
 %comprobar que son árboles distintos
     fprintf('\t3.- Árboles de Decisión\n');
+
     [Mdl_tree,INPUTTRAIN_T1,DTRAIN_T1] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree2,INPUTTRAIN_T2,DTRAIN_T2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
-    [Mdl_tree3,INPUTTRAIN_T3,DTRAIN_T3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
+    [Mdl_tree2,INPUTTRAIN_T2,DTRAIN_T2] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'twoing','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','off');
+    [Mdl_tree3,INPUTTRAIN_T3,DTRAIN_T3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 15, 'MergeLeaves','on');
+
 end
+
 Models = [Mdl_linear; Mdl_quadratic; Mdl_tree; Mdl_tree2; Mdl_tree3];
 MInputs = [INPUTTRAIN_L;INPUTTRAIN_Q;INPUTTRAIN_T1;INPUTTRAIN_T2;INPUTTRAIN_T3];
 MOutputs = [DTRAIN_L;DTRAIN_Q;DTRAIN_T1;DTRAIN_T2;DTRAIN_T3];
@@ -74,11 +78,11 @@ if (strcmp(loaded,'iris') == 1)
             case 2
                 modelo = 'Discriminante Cuadrático';
             case 3
-                modelo = 'Árbol de Decisión, splitCriterion = gdi';
+                modelo = 'Árbol de Decisión I';
             case 4
-                modelo = 'Árbol de Decisión, splitCriterion = twoing';
+                modelo = 'Árbol de Decisión II';
             case 5
-                modelo = 'Árbol de Decisión, splitCriterion = deviance';
+                modelo = 'Árbol de Decisión III';
         end          
         fprintf('3.%i.1) Informe con las métricas para los modelos entrenados con %s\n',i,modelo);
         [mean_ACC(i,:)] = indices_informe_iris(CV.N,classNumber,INPUTS,MInputs(i,:),OUTPUTS,MOutputs(i,:),CV,Models(i,:),i);
@@ -91,11 +95,11 @@ elseif (strcmp(loaded,'cancer') == 1)
             case 2
                 modelo = 'Discriminante Cuadrático';
             case 3
-                modelo = 'Árbol de Decisión, splitCriterion = gdi';
+                modelo = 'Árbol de Decisión I';
             case 4
-                modelo = 'Árbol de Decisión, splitCriterion = twoing';
+                modelo = 'Árbol de Decisión II';
             case 5
-                modelo = 'Árbol de Decisión, splitCriterion = deviance';
+                modelo = 'Árbol de Decisión III';
         end          
         fprintf('3.%i.1) Informe con las métricas para los modelos entrenados con %s\n',i,modelo);
         [mean_ACC(i,:)] = indices_informe_cancer(k,1,INPUTS,MInputs(i,:),OUTPUTS,MOutputs(i,:),CV,Models(i,:),i);  
