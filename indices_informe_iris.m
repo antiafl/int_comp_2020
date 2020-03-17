@@ -1,6 +1,5 @@
 function [mean_ACC] = indices_informe_iris(N,classNumber,INPUTS,INPUTTRAIN,OUTPUTS,DTRAIN,CV,Mdl,i)
 
-%TODO - pensar si vale la pena guardar C matriz de confusión para después
 k=1; %controlar que agrupamos los datos de 15 en 15
 h=1; %contador para insertar correctamente en la matriz que se le pasa a performance_indexes
 for x = 1:N    
@@ -11,6 +10,7 @@ for x = 1:N
     DTEST_array{k,1} = DTEST{1,1};
     DTEST_REAL_array{k,1} = DTEST_REAL{1,1};
     
+    %Calcular métricas rendimiento TRAINING
     DTRAIN_REAL=predict(Mdl{x}, INPUTTRAIN{1,x});    
     [CTrain, orderCMTrain] = confusionmat(DTRAIN{1,x}, DTRAIN_REAL);
     for j = 1:classNumber 

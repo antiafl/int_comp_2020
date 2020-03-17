@@ -25,10 +25,10 @@ if (strcmp(loaded,'iris') == 1)
 %Training con Leave 1 Out
     CV = cvpartition(OUTPUTS,'LeaveOut');
     fprintf('1) Entrenando modelos con Leave 1 Out para dataset Iris\n');
-    fprintf('\t1.- Discriminante Lineal\n\n\n')
+    fprintf('\t1.- Discriminante Lineal\n')
     [Mdl_linear,INPUTTRAIN_L,DTRAIN_L] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'linear',CV);
     
-    fprintf('\t2.- Discriminante Cuadrático\n\n\n')
+    fprintf('\t2.- Discriminante Cuadrático\n')
     [Mdl_quadratic,INPUTTRAIN_Q,DTRAIN_Q] = train_leave1out_discr(CV.NumTestSets,INPUTS,OUTPUTS,'quadratic',CV);
 
     fprintf('\t3.- Árboles de Decisión\n')
@@ -50,7 +50,6 @@ elseif (strcmp(loaded,'cancer') == 1)
     fprintf('\t2.- Discriminante Cuadrático\n')
     [Mdl_quadratic,INPUTTRAIN_Q,DTRAIN_Q] = train_Kfold_discr(k,INPUTS,OUTPUTS,'quadratic',CV);
  
-%comprobar que son árboles distintos
     fprintf('\t3.- Árboles de Decisión\n');
 
     [Mdl_tree,INPUTTRAIN_T1,DTRAIN_T1] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'gdi','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 10, 'MergeLeaves','on');
@@ -58,6 +57,8 @@ elseif (strcmp(loaded,'cancer') == 1)
     [Mdl_tree3,INPUTTRAIN_T3,DTRAIN_T3] = train_Kfold_tree(k,INPUTS,OUTPUTS,CV,'deviance','MaxNumSplits', CV.N-1, 'MinLeafSize', 1, 'MinParentSize', 15, 'MergeLeaves','on');
 
 end
+
+fprintf('\n\n\n')
 
 Models = [Mdl_linear; Mdl_quadratic; Mdl_tree; Mdl_tree2; Mdl_tree3];
 MInputs = [INPUTTRAIN_L;INPUTTRAIN_Q;INPUTTRAIN_T1;INPUTTRAIN_T2;INPUTTRAIN_T3];
@@ -67,6 +68,8 @@ MOutputs = [DTRAIN_L;DTRAIN_Q;DTRAIN_T1;DTRAIN_T2;DTRAIN_T3];
 %Obtención métricas de rendimiento
 fprintf('2) Obteniendo métricas de rendimiento para los modelos entrenados\n');
 %El código se encuentra dentro del bucle por no repetir código innecesario
+
+fprintf('\n\n\n')
 
 %Muestra de las métricas obtenidas a través del informe
 fprintf('3) INFORME\n') 
