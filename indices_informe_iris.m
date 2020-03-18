@@ -20,6 +20,10 @@ for x = 1:N
     if (k==15)
         [C, orderCM] = confusionmat(DTEST_array, DTEST_REAL_array);
         for j = 1:classNumber
+            if (isequal(size(C),[2,2]))
+                C=[C ;[0, 0]];
+                C=[C [0;0;0]];
+            end
             [Sens(j,h),Spec(j,h),PPV(j,h),NPV(j,h),ACC(j,h)] = performance_indexes(C,j);
         end  
         SensTrain(:,h) = mean(SensTrainAux, 2);
@@ -44,30 +48,43 @@ for j = 1:classNumber
         otherwise
             class = '';
     end          
-    fprintf('-----IRIS %s-----\n',class)        
-    fprintf('\t-TRAIN Accuracy = %3.2f\n', mean(ACCTrain(j,:)))
-    fprintf('\t-TEST Accuracy = %3.2f\n\n', mean(ACC(j,:)))
-    
-    fprintf('\t-TRAIN Recall (Sensibilidad) = %3.2f\n', mean(SensTrain(j,:)))
-    fprintf('\t-TEST Recall (Sensibilidad) = %3.2f\n\n', mean(Sens(j,:)))
-    
-    fprintf('\t-TRAIN Precision = %3.2f\n', mean(PPVTrain(j,:)))
-    fprintf('\t-TEST Precision = %3.2f\n\n', mean(PPV(j,:)))
-    
-    fprintf('\t-TRAIN VPN = %3.2f\n', mean(NPVTrain(j,:)))
-    fprintf('\t-TEST VPN = %3.2f\n\n', mean(NPV(j,:)))
-    
-    fprintf('\t-TRAIN Especificidad = %3.2f\n', mean(SpecTrain(j,:)))
-    fprintf('\t-TEST Especificidad = %3.2f\n\n', mean(Spec(j,:)))
+    fprintf('-----IRIS %s-----\n',class)   
+    fprintf('------------Accuracy------------\n')
+    fprintf('\t-TRAIN Mean Accuracy = %3.2f\n', mean(ACCTrain(j,:)))
+    fprintf('\t-TRAIN Standard Deviation Accuracy = %3.2f\n\n', std(ACCTrain(j,:)))
+    fprintf('\t-TEST Mean Accuracy = %3.2f\n', mean(ACC(j,:)))
+    fprintf('\t-TEST Standard Deviation Accuracy = %3.2f\n\n', std(ACC(j,:)))
+    fprintf('------------Recall------------\n')
+    fprintf('\t-TRAIN Mean Recall (Sensibilidad) = %3.2f\n', mean(SensTrain(j,:)))
+    fprintf('\t-TRAIN Standard Deviation Recall (Sensibilidad) = %3.2f\n\n', std(SensTrain(j,:)))
+    fprintf('\t-TEST Mean Recall (Sensibilidad) = %3.2f\n', mean(Sens(j,:)))
+    fprintf('\t-TEST Standard Deviation Recall (Sensibilidad) = %3.2f\n\n', std(Sens(j,:)))
+    fprintf('------------Precission------------\n')
+    fprintf('\t-TRAIN Mean Precission = %3.2f\n', mean(PPVTrain(j,:)))
+    fprintf('\t-TRAIN Standard Deviation Precission = %3.2f\n\n', std(PPVTrain(j,:)))
+    fprintf('\t-TEST Mean Precission = %3.2f\n', mean(PPV(j,:)))
+    fprintf('\t-TEST Standard Deviation Precission = %3.2f\n\n', std(PPV(j,:)))
+    fprintf('------------VPN------------\n')
+    fprintf('\t-TRAIN Mean VPN = %3.2f\n', mean(NPVTrain(j,:)))
+    fprintf('\t-TRAIN Standard Deviation VPN = %3.2f\n\n', std(NPVTrain(j,:)))
+    fprintf('\t-TEST Mean VPN = %3.2f\n', mean(NPV(j,:)))
+    fprintf('\t-TEST Standard Deviation VPN = %3.2f\n\n', std(NPV(j,:)))
+    fprintf('------------Specificity------------\n')
+    fprintf('\t-TRAIN Mean Specificity = %3.2f\n', mean(SpecTrain(j,:)))
+    fprintf('\t-TRAIN Standard Deviation Specificity = %3.2f\n\n', std(SpecTrain(j,:)))
+    fprintf('\t-TEST Mean Specificity = %3.2f\n', mean(Spec(j,:)))
+    fprintf('\t-TEST Standard Deviation Specificity = %3.2f\n\n', std(Spec(j,:)))
     fprintf('\n')
 end
 
 fprintf('3.%i.2) Métricas globales\n',i)
-fprintf('\t-TRAIN Precisión global (ACCURACY) = %3.2f\n', mean(mean(ACCTrain)));
-fprintf('\t-TEST Precisión global (ACCURACY) = %3.2f\n\n', mean(mean(ACC)));
+fprintf('\t-TRAIN Mean Accuracy (Precisión global) = %3.2f\n', mean(mean(ACCTrain)));
+fprintf('\t-TRAIN Standard Deviation Accuracy (Precisión global) = %3.2f\n', mean(std(ACCTrain)));
+fprintf('\t-TEST Mean Accuracy (Precisión global) = %3.2f\n', mean(mean(ACC)));
+fprintf('\t-TEST Standard Deviation Accuracy (Precisión global) = %3.2f\n\n', std(std(ACC)));
 
-fprintf('\t-TRAIN F1 Score global (F1 SCORE) = %3.2f\n', 2*(mean(mean(PPVTrain))*mean(mean(SensTrain))/(mean(mean(PPVTrain))+mean(mean(SensTrain)))));
-fprintf('\t-TEST F1 Score global (F1 SCORE) = %3.2f\n', 2*(mean(mean(PPV))*mean(mean(Sens))/(mean(mean(PPV))+mean(mean(Sens)))));
+fprintf('\t-TRAIN Mean F1 Score global (F1 SCORE) = %3.2f\n', 2*(mean(mean(PPVTrain))*mean(mean(SensTrain))/(mean(mean(PPVTrain))+mean(mean(SensTrain)))));
+fprintf('\t-TEST Mean F1 Score global (F1 SCORE) = %3.2f\n\n', 2*(mean(mean(PPV))*mean(mean(Sens))/(mean(mean(PPV))+mean(mean(Sens)))));
 fprintf('\nFIN INFORME\n\n\n')
 
 mean_ACC = mean(ACC,1);
