@@ -39,10 +39,10 @@ fprintf('\t-TEST Standard Deviation Specificity = %3.2f\n\n', std(Spec))
 fprintf('\n')
 
 fprintf('3.%i.2) Métricas globales\n',i)
-fprintf('\t-TRAIN Mean Accuracy (Precisión global) = %3.2f\n', mean(mean(ACCTrain)));
+fprintf('\t-TRAIN Mean Accuracy (Precisión global) = %3.2f\n', mean(ACCTrain));
 fprintf('\t-TRAIN Standard Deviation Accuracy (Precisión global) = %3.2f\n', std(ACCTrain));
-fprintf('\t-TEST Mean Accuracy (Precisión global) = %3.2f\n', mean(mean(ACC)));
-fprintf('\t-TEST Standard Deviation Accuracy (Precisión global) = %3.2f\n\n', std(std(ACC)));
+fprintf('\t-TEST Mean Accuracy (Precisión global) = %3.2f\n', mean(ACC));
+fprintf('\t-TEST Standard Deviation Accuracy (Precisión global) = %3.2f\n\n', std(ACC));
 
 fprintf('\t-TRAIN Mean F1 Score global (F1 SCORE) = %3.2f\n', 2*(mean(PPVTrain)*mean(SensTrain)/(mean(PPVTrain)+mean(SensTrain))));
 fprintf('\t-TEST Mean F1 Score global (F1 SCORE) = %3.2f\n\n', 2*(mean(PPV)*mean(Sens)/(mean(PPV)+mean(Sens))));

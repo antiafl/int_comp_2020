@@ -8,13 +8,13 @@ rng('shuffle');
 
 %% IRIS
 % load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\irisVars');
-load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
-loaded = 'iris'; classNumber = 3;
+% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\irisVars');
+% loaded = 'iris'; classNumber = 3;
 
 %% CANCER WISONSIN
 % load('C:\Users\veron\OneDrive\Documentos\GitHub\int_comp_2020\cancerVars');
-% load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
-% loaded = 'cancer';classNumber = 2;
+load('E:\MASTER\CUATRI_2\2.4_Inteligencia_Computacional\Practicas\int_comp_2020\cancerVars');
+loaded = 'cancer';classNumber = 2;
 
 %% PRÁCTICA
 %fichero distinto para cada dataset
